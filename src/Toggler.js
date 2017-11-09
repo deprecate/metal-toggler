@@ -40,6 +40,12 @@ class Toggler extends State {
 		dom.addClasses(content, this.collapsedClasses);
 		dom.removeClasses(headerElements, this.headerExpandedClasses);
 		dom.addClasses(headerElements, this.headerCollapsedClasses);
+		[].slice.call(content instanceof NodeList ? content : [content]).forEach(target => {
+			target.setAttribute('aria-expanded', false);
+		});
+		[].slice.call(headerElements instanceof NodeList ? headerElements : [headerElements]).forEach(headerElement => {
+			headerElement.setAttribute('aria-expanded', false);
+		});
 	}
 
 	/**
@@ -53,6 +59,12 @@ class Toggler extends State {
 		dom.removeClasses(content, this.collapsedClasses);
 		dom.addClasses(headerElements, this.headerExpandedClasses);
 		dom.removeClasses(headerElements, this.headerCollapsedClasses);
+		[].slice.call(content instanceof NodeList ? content : [content]).forEach(target => {
+			target.setAttribute('aria-expanded', true);
+		});
+		[].slice.call(headerElements instanceof NodeList ? headerElements : [headerElements]).forEach(headerElement => {
+			headerElement.setAttribute('aria-expanded', true);
+		});
 	}
 
 	/**

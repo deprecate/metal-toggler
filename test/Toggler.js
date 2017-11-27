@@ -26,10 +26,14 @@ describe('Toggler', function() {
 			dom.triggerEvent(toggler.header, 'click');
 			assert.ok(!dom.hasClass(toggler.content, toggler.collapsedClasses));
 			assert.ok(dom.hasClass(toggler.content, toggler.expandedClasses));
+			assert.ok(toggler.header.getAttribute('aria-expanded') === 'true');
+			assert.ok(toggler.content.getAttribute('aria-expanded') === 'true');
 
 			dom.triggerEvent(toggler.header, 'click');
 			assert.ok(dom.hasClass(toggler.content, toggler.collapsedClasses));
 			assert.ok(!dom.hasClass(toggler.content, toggler.expandedClasses));
+			assert.ok(toggler.header.getAttribute('aria-expanded') === 'false');
+			assert.ok(toggler.content.getAttribute('aria-expanded') === 'false');
 		});
 
 		it('should expand/collapse content when ENTER key is pressed on header', function() {

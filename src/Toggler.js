@@ -40,12 +40,8 @@ class Toggler extends State {
 		dom.addClasses(content, this.collapsedClasses);
 		dom.removeClasses(headerElements, this.headerExpandedClasses);
 		dom.addClasses(headerElements, this.headerCollapsedClasses);
-		[].slice.call(content instanceof NodeList ? content : [content]).forEach(target => {
-			target.setAttribute('aria-expanded', false);
-		});
-		[].slice.call(headerElements instanceof NodeList ? headerElements : [headerElements]).forEach(headerElement => {
-			headerElement.setAttribute('aria-expanded', false);
-		});
+		this.setAttribute_(content, 'aria-expanded', false);
+		this.setAttribute_(headerElements, 'aria-expanded', false);
 	}
 
 	/**
@@ -59,12 +55,8 @@ class Toggler extends State {
 		dom.removeClasses(content, this.collapsedClasses);
 		dom.addClasses(headerElements, this.headerExpandedClasses);
 		dom.removeClasses(headerElements, this.headerCollapsedClasses);
-		[].slice.call(content instanceof NodeList ? content : [content]).forEach(target => {
-			target.setAttribute('aria-expanded', true);
-		});
-		[].slice.call(headerElements instanceof NodeList ? headerElements : [headerElements]).forEach(headerElement => {
-			headerElement.setAttribute('aria-expanded', true);
-		});
+		this.setAttribute_(content, 'aria-expanded', true);
+		this.setAttribute_(headerElements, 'aria-expanded', true);
 	}
 
 	/**
@@ -138,6 +130,20 @@ class Toggler extends State {
 			return dom.hasClass(header, this.headerExpandedClasses);
 		}
 		return !!this.container.querySelectorAll(`.${this.headerExpandedClasses}`).length;
+	}
+
+	/**
+	 * Sets attribute on one or more elements.
+	 * @param {!Element|NodeList} elements
+	 * @param {!string} name
+	 * @param {?string|boolean} value
+	 */
+	setAttribute_(elements, name, value) {
+		elements = elements instanceof NodeList ? elements : [elements];
+
+		for (let i = 0; i < elements.length; i++) {
+			elements[i].setAttribute(name, value);
+		}
 	}
 
 	/**

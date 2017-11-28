@@ -4,7 +4,7 @@ module.exports = function(config) {
 	config.set({
 		browsers: ['Chrome'],
 
-		frameworks: ['mocha', 'chai'],
+		frameworks: ['mocha', 'chai', 'sinon'],
 
 		files: [
 			{
@@ -19,6 +19,7 @@ module.exports = function(config) {
 			'karma-chai',
 			'karma-chrome-launcher',
 			'karma-mocha',
+			'karma-sinon',
 			'karma-webpack'
 		],
 

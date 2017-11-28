@@ -36,6 +36,10 @@ class Toggler extends State {
 	collapse(header) {
 		let headerElements = this.getHeaderElements_(header);
 		let content = this.getContentElement_(headerElements);
+
+		this.emit('headerToggled', {headerElements, content});
+		this.emit('headerCollapsed', {headerElements, content});
+
 		dom.removeClasses(content, this.expandedClasses);
 		dom.addClasses(content, this.collapsedClasses);
 		dom.removeClasses(headerElements, this.headerExpandedClasses);
@@ -51,6 +55,10 @@ class Toggler extends State {
 	expand(header) {
 		let headerElements = this.getHeaderElements_(header);
 		let content = this.getContentElement_(headerElements);
+
+		this.emit('headerToggled', {headerElements, content});
+		this.emit('headerExpanded', {headerElements, content});
+
 		dom.addClasses(content, this.expandedClasses);
 		dom.removeClasses(content, this.collapsedClasses);
 		dom.addClasses(headerElements, this.headerExpandedClasses);

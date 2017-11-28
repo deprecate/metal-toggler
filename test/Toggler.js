@@ -20,10 +20,7 @@ describe('Toggler', function() {
 		});
 
 		it('should expand/collapse content when header is clicked', function() {
-			toggler = new Toggler({
-				content: dom.toElement('.toggler-content'),
-				header: dom.toElement('.toggler-btn'),
-			});
+			createToggler();
 
 			dom.triggerEvent(toggler.header, 'click');
 			assert.ok(!dom.hasClass(toggler.content, toggler.collapsedClasses));
@@ -39,10 +36,7 @@ describe('Toggler', function() {
 		});
 
 		it('should expand/collapse content when ENTER key is pressed on header', function() {
-			toggler = new Toggler({
-				content: dom.toElement('.toggler-content'),
-				header: dom.toElement('.toggler-btn'),
-			});
+			createToggler();
 
 			dom.triggerEvent(toggler.header, 'keydown', {
 				keyCode: 13,
@@ -58,10 +52,7 @@ describe('Toggler', function() {
 		});
 
 		it('should expand/collapse content when SPACE key is pressed on header', function() {
-			toggler = new Toggler({
-				content: dom.toElement('.toggler-content'),
-				header: dom.toElement('.toggler-btn'),
-			});
+			createToggler();
 
 			dom.triggerEvent(toggler.header, 'keydown', {
 				keyCode: 32,
@@ -77,10 +68,7 @@ describe('Toggler', function() {
 		});
 
 		it('should not expand/collapse content when any other key is pressed on header', function() {
-			toggler = new Toggler({
-				content: dom.toElement('.toggler-content'),
-				header: dom.toElement('.toggler-btn'),
-			});
+			createToggler();
 
 			dom.triggerEvent(toggler.header, 'keydown', {
 				keyCode: 10,
@@ -90,10 +78,7 @@ describe('Toggler', function() {
 		});
 
 		it('should add css classes to header when content is expanded/collapsed', function() {
-			toggler = new Toggler({
-				content: dom.toElement('.toggler-content'),
-				header: dom.toElement('.toggler-btn'),
-			});
+			createToggler();
 
 			dom.triggerEvent(toggler.header, 'click');
 			assert.ok(!dom.hasClass(toggler.header, toggler.headerCollapsedClasses));
@@ -113,10 +98,7 @@ describe('Toggler', function() {
 		});
 
 		it('should expand/collapse content by calling the public method', function() {
-			toggler = new Toggler({
-				content: dom.toElement('.toggler-content'),
-				header: dom.toElement('.toggler-btn'),
-			});
+			createToggler();
 
 			toggler.expand();
 			assert.ok(!dom.hasClass(toggler.content, toggler.collapsedClasses));
@@ -129,6 +111,49 @@ describe('Toggler', function() {
 			assert.ok(!dom.hasClass(toggler.content, toggler.expandedClasses));
 			assert.ok(dom.hasClass(toggler.header, toggler.headerCollapsedClasses));
 			assert.ok(!dom.hasClass(toggler.header, toggler.headerExpandedClasses));
+		});
+
+		it('should fire events when the header is toggled', function() {
+			createToggler();
+
+			const listener = sinon.stub();
+
+			toggler.on('headerToggled', listener);
+
+			dom.triggerEvent(toggler.header, 'click');
+			dom.triggerEvent(toggler.header, 'click');
+
+			assert.equal(listener.callCount, 2);
+			assert.equal(listener.getCall(0).args[1].type, 'headerToggled');
+			assert.equal(listener.getCall(1).args[1].type, 'headerToggled');
+		});
+
+		it('should fire an event when the header is expanded', function() {
+			createToggler();
+
+			const listener = sinon.stub();
+
+			toggler.on('headerExpanded', listener);
+
+			dom.triggerEvent(toggler.header, 'click');
+			dom.triggerEvent(toggler.header, 'click');
+
+			assert.equal(listener.callCount, 1);
+			assert.equal(listener.getCall(0).args[1].type, 'headerExpanded');
+		});
+
+		it('should fire an event when the header is collapsed', function() {
+			createToggler();
+
+			const listener = sinon.stub();
+
+			toggler.on('headerCollapsed', listener);
+
+			dom.triggerEvent(toggler.header, 'click');
+			dom.triggerEvent(toggler.header, 'click');
+
+			assert.equal(listener.callCount, 1);
+			assert.equal(listener.getCall(0).args[1].type, 'headerCollapsed');
 		});
 	});
 
@@ -205,10 +230,7 @@ describe('Toggler', function() {
 				'<div id="togglerContent2" class="toggler-content toggler-collapsed"></div>'
 			);
 
-			toggler = new Toggler({
-				content: '.toggler-content',
-				header: '.toggler-btn',
-			});
+			createToggler();
 
 			let toggler1 = dom.toElement('#toggler1');
 			let toggler2 = dom.toElement('#toggler2');
@@ -267,10 +289,7 @@ describe('Toggler', function() {
 				'<div id="togglerContent2" class="toggler-content toggler-collapsed"></div>'
 			);
 
-			toggler = new Toggler({
-				content: '.toggler-content',
-				header: '.toggler-btn',
-			});
+			createToggler();
 
 			dom.triggerEvent(dom.toElement('.toggler-btn'), 'click');
 			assert.ok(
@@ -289,10 +308,7 @@ describe('Toggler', function() {
 				'<div class="toggler-btn"><div class="toggler-content toggler-collapsed"></div></div>'
 			);
 
-			toggler = new Toggler({
-				content: '.toggler-content',
-				header: '.toggler-btn',
-			});
+			createToggler();
 
 			dom.triggerEvent(dom.toElement('.toggler-btn'), 'click');
 			assert.ok(
@@ -312,10 +328,7 @@ describe('Toggler', function() {
 				'<div><div class="toggler-content toggler-collapsed"></div></div>'
 			);
 
-			toggler = new Toggler({
-				content: '.toggler-content',
-				header: '.toggler-btn',
-			});
+			createToggler();
 
 			dom.triggerEvent(dom.toElement('.toggler-btn'), 'click');
 			assert.ok(
@@ -416,4 +429,11 @@ describe('Toggler', function() {
 			});
 		});
 	});
+
+	function createToggler() {
+		toggler = new Toggler({
+			content: dom.toElement('.toggler-content'),
+			header: dom.toElement('.toggler-btn'),
+		});
+	}
 });

@@ -224,7 +224,7 @@ Toggler.STATE = {
 	container: {
 		setter: dom.toElement,
 		validator: value => core.isString(value) || core.isElement(value),
-		value: document,
+		valueFn: () => document,
 	},
 
 	/**

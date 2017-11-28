@@ -19,6 +19,14 @@ describe('Toggler', function() {
 			);
 		});
 
+		it('should not have already resolved default container value', function() {
+			assert.isUndefined(Toggler.STATE.container.value);
+
+			createToggler();
+
+			assert.equal(toggler.container, document);
+		});
+
 		it('should expand/collapse content when header is clicked', function() {
 			createToggler();
 
